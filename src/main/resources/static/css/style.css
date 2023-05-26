@@ -1,0 +1,75 @@
+* {
+    font-family: 'Exo 2', sans-serif;
+    line-height: 1.5;
+    color: #333;
+    transition-duration: 350ms;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    text-align: center;
+}
+
+h1 {
+    font-size: xxx-large;
+}
+
+h2 {
+    font-size: xx-large;
+}
+
+h3 {
+    font-size: x-large;
+}
+
+main {
+    max-width: 50em;
+    margin: auto;
+}
+
+.center-aligner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6em;
+}
+
+form.hor {
+    flex-direction: row;
+}
+
+input {
+    padding: 0.2em;
+    border: 4px double #ca2bf1;
+    background: ghostwhite;
+}
+
+input:focus {
+    background: white;
+    transform: scale(1.1)
+}
+
+div.container {
+    margin: auto;
+    display: flex;
+    gap: 0.4em;
+    justify-content: center;
+}
+
+button {
+    background: #ca2bf1;
+    color: white;
+    border: none;
+    padding: 1em;
+    font-size: 20px;
+    border-radius: 23%;
+}
+
+button.small {
+    padding: 0.45em;
+    font-size: inherit;
+}
+
+button:hover {
+    background: hotpink;
+    transform: translateY(3%) scale(97%);
+}

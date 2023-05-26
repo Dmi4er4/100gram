@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>100gram</title>
+    <base href="/">
+
+    <script src="lib/angular.min.js"></script>
+    <script src="lib/angular-route.min.js"></script>
+    <script src="lib/angular-cookies.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script>
+        const app = angular.module('myApp', ['ngRoute', 'ngCookies']);
+
+        app.config(function($routeProvider, $locationProvider) {
+            $routeProvider
+                .when('/', {
+                    template: '<h1>the Messenger of your Dream!</h1>' +
+                        '<div class="container">' +
+                        '    <button id="#btn-login" ng-click="navigateToLogin()"> Login </button>' +
+                        '    <button id="#btn-register"> Register </button>' +
+                        '</div>'
+                })
+                .when('/login', {
+                    templateUrl: 'login.html',
+                    controller: 'loginCtrl'
+                })
+                .when('/chat', {
+                    templateUrl: 'chat.html',
+                    controller: 'chatCtrl'
+                })
+                .otherwise({
+                    redirectTo: '/'
+                });
+
+            $locationProvider.html5Mode(true);
+        });
+
+        app.controller('homeCtrl', function($scope, $location) {
+
+        });
+
+        app.controller('loginCtrl', function($scope, $cookies, $http) {
+            $scope.credentials = {};
+
+            $scope.loginRequest = function() {
+                $http.post('/api/login', $scope.credentials)
+                    .then(function(response) {
+                        if (response.data.error) {
+                            alert(response.data.error)
+                        } else {
+                            $cookies.put("name", response.data.name)
+                            $cookies.put("uid", response.data.id)
+                            $scope.navigateToChats()
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error('Login failed');
+                        console.error(error);
+                    });
+            };
+        });
+
+        app.controller('chatCtrl', function($scope, $cookies) {
+            document.getElementById("introduction").innerText = 'You are ' + $cookies.get('name') +
+                ' (id:' + $cookies.get('uid') + ')'
+        });
+
+        app.run(function($rootScope, $location) {
+            $rootScope.navigateToLogin = function() {
+                $location.path('/login');
+            };
+            $rootScope.navigateToChats = function() {
+                $location.path('/chat');
+            };
+        });
+    </script>
+</head>
+<body ng-app="myApp">
+<main ng-view>
+</main>
+</body>
+</html>
