@@ -15,6 +15,10 @@ public class Chat {
         this.created = Date.valueOf(LocalDate.now());
     }
 
+    public Chat(long id, Date date) {
+        this.id = id;
+        this.created = date;
+    }
     public long getId() {
         return id;
     }

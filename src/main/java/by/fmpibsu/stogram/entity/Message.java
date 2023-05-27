@@ -3,7 +3,10 @@ package by.fmpibsu.stogram.entity;
 import java.sql.Timestamp;
 
 public class Message {
+
+    private long id;
     private long senderId;
+    private long chatId;
     private String content;
     private Timestamp time;
 
