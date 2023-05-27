@@ -13,4 +13,6 @@ public interface ChatDao {
     void save(Chat chat);
 
     void delete(Chat chat);
+
+    Chat findOrCreateDialog(long id1, long id2);
 }

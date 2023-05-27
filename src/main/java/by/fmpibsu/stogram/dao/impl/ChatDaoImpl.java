@@ -39,4 +39,19 @@ public class ChatDaoImpl implements ChatDao {
     public void delete(Chat chat) {
         chatStorage.remove(chat);
     }
+
+    @Override
+    public Chat findOrCreateDialog(long id1, long id2) {
+        for (var chat : chatStorage) {
+            var mem = chat.getMemberIds();
+            if (mem.size() == 2 && mem.contains(id1) && mem.contains(id2)) {
+                return chat;
+            }
+        }
+        var newChat = new Chat(chatStorage.size());
+        newChat.addMember(id1);
+        newChat.addMember(id2);
+        save(newChat);
+        return newChat;
+    }
 }

@@ -2,12 +2,13 @@ package by.fmpibsu.stogram.entity;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Chat {
     private long id;
     private Date created;
-    private List<Long> memberIds;
+    private List<Long> memberIds = new ArrayList<>();
 
     public Chat(long id) {
         this.id = id;
@@ -26,7 +27,7 @@ public class Chat {
         return memberIds;
     }
 
-    void addMember(long id) {
+    public void addMember(long id) {
         memberIds.add(id);
     }
 }

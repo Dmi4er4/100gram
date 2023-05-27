@@ -56,24 +56,65 @@
                             $scope.navigateToChats()
                         }
                     })
-                    .catch(function(error) {
-                        console.error('Login failed');
-                        console.error(error);
-                    });
+                    .catch($scope.handleError);
             };
         });
 
-        app.controller('chatCtrl', function($scope, $cookies) {
+        app.controller('chatCtrl', function($scope, $cookies, $http, $compile) {
             document.getElementById("introduction").innerText = 'You are ' + $cookies.get('name') +
-                ' (id:' + $cookies.get('uid') + ')'
+                ' (id:' + $cookies.get('uid') + ')';
+
+            $scope.addChat = function(chat) {
+                const chatListElement = angular.element(document.getElementById('chat-list'));
+                const newDiv = angular.element('<div>').addClass('chatlist-entry center-aligner hor');
+                const chatNameElement = $compile('<h3></h3>')($scope);
+                for (let member of chat.memberIds) {
+                    if (member !== +$cookies.get('uid')) {
+                        $scope.getUserByIdPromise(member).then(function(user) {
+                            chatNameElement.text((chatNameElement.text().trim().length > 0 ? ', ' : '') + user.name);
+                        })
+                    }
+                }
+                newDiv.append(chatNameElement);
+                chatListElement.append(newDiv);
+            };
+
+            $http.post('api/chats-list', $cookies.get('uid'))
+                .then(function (response) {
+                    for (let chat of response.data) {
+                        $scope.addChat(chat);
+                    }
+                })
+                .catch($scope.handleError);
         });
 
-        app.run(function($rootScope, $location) {
+        app.run(function($rootScope, $location, $http) {
+            $rootScope.usersMap = {}
+
             $rootScope.navigateToLogin = function() {
                 $location.path('/login');
             };
+
             $rootScope.navigateToChats = function() {
                 $location.path('/chat');
+            };
+
+            $rootScope.getUserByIdPromise = function(id) {
+                if ($rootScope.usersMap[id] === undefined) {
+                    return $http.post('/api/user', id)
+                        .then(function (response) {
+                            $rootScope.usersMap[id] = response.data;
+                            return $rootScope.usersMap[id];
+                        })
+                        .catch($rootScope.handleError)
+                }
+                return $rootScope.usersMap[id]
+            };
+
+            $rootScope.handleError = function (error) {
+                if (error.status === 401) {
+                    $rootScope.navigateToLogin();
+                }
             };
         });
     </script>

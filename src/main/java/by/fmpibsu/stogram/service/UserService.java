@@ -19,4 +19,8 @@ public class UserService {
     public Optional<User> getByUsername(String username) {
         return userDao.getByUsername(username);
     }
+
+    public Optional<User> getById(long id) {
+        return userDao.getById(id);
+    }
 }
