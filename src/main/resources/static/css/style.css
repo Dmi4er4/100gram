@@ -1,0 +1,164 @@
+/* exo-2-regular - cyrillic_cyrillic-ext_latin */
+@font-face {
+    font-display: swap;
+    font-family: 'Exo 2';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/exo-2-v20-cyrillic_cyrillic-ext_latin-regular.woff2') format('woff2');
+}
+
+body {
+    background: rgb(194,245,255);
+    background: -moz-linear-gradient(90deg, rgba(194,245,255,1) 0%, rgba(255,169,196,1) 100%);
+    background: -webkit-linear-gradient(90deg, rgba(194,245,255,1) 0%, rgba(255,169,196,1) 100%);
+    background: linear-gradient(90deg, rgba(194,245,255,1) 0%, rgba(255,169,196,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#c2f5ff",endColorstr="#ffa9c4",GradientType=1);
+}
+
+* {
+    font-family: 'Exo 2', sans-serif;
+    line-height: 1.5;
+    color: #333;
+    transition-duration: 350ms;
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    text-align: center;
+    margin: auto;
+}
+
+h1 {
+    font-size: xxx-large;
+}
+
+h2 {
+    font-size: xx-large;
+}
+
+h3 {
+    font-size: x-large;
+}
+
+main {
+    max-width: 50em;
+    margin: auto;
+}
+
+.center-aligner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6em;
+}
+
+form.hor {
+    flex-direction: row;
+}
+
+input {
+    padding: 0.2em;
+    border: 4px double #ca2bf1;
+    background: transparent;
+}
+
+input:focus {
+    background: white;
+    transform: scale(1.1);
+}
+
+div.container {
+    margin: auto;
+    display: flex;
+    gap: 0.4em;
+    justify-content: center;
+}
+
+button {
+    background: #ca2bf1;
+    color: white;
+    border: none;
+    padding: 1em;
+    font-size: 20px;
+    border-radius: 23%;
+}
+
+button.small {
+    padding: 0.45em;
+    font-size: inherit;
+}
+
+button.chatlist-entry {
+    outline: 1px solid hotpink;
+    width: 100%;
+    border-radius: 0;
+    height: 3.5em;
+}
+
+button.chatlist-entry:not(.inactive) {
+    background: purple;
+}
+
+button:hover {
+    background: hotpink;
+    transform: translateY(3%) scale(97%);
+}
+
+.flex {
+    display: flex;
+}
+
+#chat-list {
+    border-right: 1px dashed hotpink;
+    width: 20em;
+    display: inline-block;
+    flex: 0 0 auto;
+}
+
+#active-chat {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+}
+
+#view-messages {
+    overflow: scroll;
+    width: 100%;
+}
+
+#message-area {
+    height: 5em;
+    width: 100%;
+    display: flex;
+}
+
+#message {
+    flex-grow: 1;
+    width: 100%;
+    resize: none;
+    background: transparent;
+    border: 4px solid rgba(255, 255, 255, 50%);
+    margin: 0;
+}
+
+#view-messages * {
+    display: block;
+    text-align: center;
+    border: 1px dashed green;
+}
+
+#chat-application {
+    height: 80vh;
+    background-color: rgba(0, 0, 0, 5%);
+}
+
+#message.inactive {
+    visibility: hidden;
+}

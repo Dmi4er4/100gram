@@ -1,0 +1,21 @@
+<h3 id="introduction"></h3>
+<div class="center-aligner">
+    <form class="hor">
+        <label for="recipient"> Start chatting with:&nbsp; </label>
+        <input type="text" id="recipient" placeholder="recipient's username">
+        <button type="submit" class="small"> Load! </button>
+    </form>
+</div>
+<br>
+<div id="chat-application" class="flex">
+    <div id="chat-list">
+        <h3> Active chats: </h3>
+    </div>
+    <div id="active-chat">
+        <div id="view-messages">
+        </div>
+        <div id="message-area">
+            <textarea class="inactive" id="message" ng-keypress="handleKeyPressInMessage($event)" placeholder="Message"></textarea>
+        </div>
+    </div>
+</div>
