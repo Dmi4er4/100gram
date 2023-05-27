@@ -20,6 +20,7 @@ body {
     line-height: 1.5;
     color: #333;
     transition-duration: 350ms;
+    box-sizing: border-box;
 }
 
 html, body {
@@ -93,10 +94,15 @@ button.small {
     font-size: inherit;
 }
 
-div.chatlist-entry {
-    background: rgba(202, 43, 241, 30%);
+button.chatlist-entry {
     outline: 1px solid hotpink;
+    width: 100%;
+    border-radius: 0;
     height: 3.5em;
+}
+
+button.chatlist-entry:not(.inactive) {
+    background: purple;
 }
 
 button:hover {
@@ -118,6 +124,8 @@ button:hover {
 #active-chat {
     flex: 1 1 auto;
     display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
 }
 
 #view-messages {
@@ -127,13 +135,30 @@ button:hover {
 
 #message-area {
     height: 5em;
+    width: 100%;
+    display: flex;
 }
 
 #message {
+    flex-grow: 1;
+    width: 100%;
+    resize: none;
+    background: transparent;
+    border: 4px solid rgba(255, 255, 255, 50%);
+    margin: 0;
+}
 
+#view-messages * {
+    display: block;
+    text-align: center;
+    border: 1px dashed green;
 }
 
 #chat-application {
     height: 80vh;
     background-color: rgba(0, 0, 0, 5%);
+}
+
+#message.inactive {
+    visibility: hidden;
 }

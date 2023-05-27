@@ -12,15 +12,15 @@
     <link rel="stylesheet" href="css/style.css">
 
     <script>
-        const app = angular.module('myApp', ['ngRoute', 'ngCookies']);
+        const app = angular.module('myApp', ['ngRoute', 'ngCookies'])
 
         app.config(function($routeProvider, $locationProvider) {
             $routeProvider
                 .when('/', {
                     template: '<h1>the Messenger of your Dream!</h1>' +
                         '<div class="container">' +
-                        '    <button id="#btn-login" ng-click="navigateToLogin()"> Login </button>' +
-                        '    <button id="#btn-register"> Register </button>' +
+                        '    <button id="#btn-login" ng-click="navigateToLogin()"> Log In </button>' +
+                        '    <button id="#btn-register" style="display: none"> Register </button>' +
                         '</div>'
                 })
                 .when('/login', {
@@ -33,17 +33,17 @@
                 })
                 .otherwise({
                     redirectTo: '/'
-                });
+                })
 
-            $locationProvider.html5Mode(true);
-        });
+            $locationProvider.html5Mode(true)
+        })
 
         app.controller('homeCtrl', function($scope, $location) {
 
-        });
+        })
 
         app.controller('loginCtrl', function($scope, $cookies, $http) {
-            $scope.credentials = {};
+            $scope.credentials = {}
 
             $scope.loginRequest = function() {
                 $http.post('/api/login', $scope.credentials)
@@ -56,67 +56,101 @@
                             $scope.navigateToChats()
                         }
                     })
-                    .catch($scope.handleError);
-            };
-        });
+                    .catch($scope.handleError)
+            }
+        })
 
         app.controller('chatCtrl', function($scope, $cookies, $http, $compile) {
             document.getElementById("introduction").innerText = 'You are ' + $cookies.get('name') +
-                ' (id:' + $cookies.get('uid') + ')';
+                ' (id:' + $cookies.get('uid') + ')'
 
             $scope.addChat = function(chat) {
-                const chatListElement = angular.element(document.getElementById('chat-list'));
-                const newDiv = angular.element('<div>').addClass('chatlist-entry center-aligner hor');
-                const chatNameElement = $compile('<h3></h3>')($scope);
+                const chatListElement = angular.element(document.getElementById('chat-list'))
+                const newDiv = angular.element(`<button id="chat${chat.id}" onclick="handleClickOnChat(${chat.id})"></button>`)
+                    .addClass('chatlist-entry center-aligner hor inactive')
                 for (let member of chat.memberIds) {
                     if (member !== +$cookies.get('uid')) {
                         $scope.getUserByIdPromise(member).then(function(user) {
-                            chatNameElement.text((chatNameElement.text().trim().length > 0 ? ', ' : '') + user.name);
+                            newDiv.text((newDiv.text().trim().length > 0 ? ', ' : '') + user.name)
                         })
                     }
                 }
-                newDiv.append(chatNameElement);
-                chatListElement.append(newDiv);
-            };
+                chatListElement.append(newDiv)
+            }
+
+            $scope.addMessage = function(text) {
+                const viewArea = angular.element(document.getElementById('view-messages'))
+                const newDiv = angular.element('<div>').addClass('sent-message')
+                newDiv.text(text)
+                viewArea.append(newDiv)
+            }
 
             $http.post('api/chats-list', $cookies.get('uid'))
                 .then(function (response) {
                     for (let chat of response.data) {
-                        $scope.addChat(chat);
+                        $scope.addChat(chat)
                     }
                 })
-                .catch($scope.handleError);
-        });
+                .catch($scope.handleError)
+
+            $scope.activeChat = undefined
+
+            $scope.handleKeyPressInMessage = function(event) {
+                if (event.ctrlKey && event.key === 'Enter') {
+                    const message = document.getElementById('message').value.trim()
+                    if (message.length > 0) {
+                        $http.post('/api/send/', {
+                            from: +$cookies.get('uid'),
+                            text: message,
+                            chat: $scope.activeChat
+                        }).then(function (response) {
+                            $scope.addMessage(message)
+                        }).catch($scope.handleError)
+                    }
+                }
+            }
+
+            window.handleClickOnChat = function(chatId) {
+                let currentChatId = $scope.activeChat
+                $scope.activeChat = chatId
+                if (+currentChatId === +chatId) return
+                if (currentChatId !== undefined) {
+                    document.getElementById('chat' + currentChatId).classList.add('inactive')
+                }
+                document.getElementById('chat' + chatId).classList.remove('inactive')
+                document.getElementById('message').classList.remove('inactive')
+            }
+        })
 
         app.run(function($rootScope, $location, $http) {
             $rootScope.usersMap = {}
 
             $rootScope.navigateToLogin = function() {
-                $location.path('/login');
-            };
+                $location.path('/login')
+            }
 
             $rootScope.navigateToChats = function() {
-                $location.path('/chat');
-            };
+                $location.path('/chat')
+            }
 
             $rootScope.getUserByIdPromise = function(id) {
                 if ($rootScope.usersMap[id] === undefined) {
                     return $http.post('/api/user', id)
                         .then(function (response) {
-                            $rootScope.usersMap[id] = response.data;
-                            return $rootScope.usersMap[id];
+                            $rootScope.usersMap[id] = response.data
+                            return $rootScope.usersMap[id]
                         })
                         .catch($rootScope.handleError)
                 }
                 return $rootScope.usersMap[id]
-            };
+            }
 
             $rootScope.handleError = function (error) {
                 if (error.status === 401) {
-                    $rootScope.navigateToLogin();
+                    $rootScope.navigateToLogin()
                 }
-            };
-        });
+            }
+        })
     </script>
 </head>
 <body ng-app="myApp">
