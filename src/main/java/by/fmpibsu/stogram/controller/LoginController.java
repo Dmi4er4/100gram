@@ -1,8 +1,9 @@
-package by.fmpibsu.stogram.controllers;
+package by.fmpibsu.stogram.controller;
 
-import by.fmpibsu.stogram.UserDao;
+import by.fmpibsu.stogram.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,7 +11,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class LoginController {
-    UserDao userDao = new UserDao();
+    private final UserService userService;
+
+    @Autowired
+    public LoginController(UserService userService) {
+        this.userService = userService;
+    }
 
     public static class LoginForm {
 
@@ -40,16 +46,14 @@ public class LoginController {
         String username = loginForm.getUsername();
         String password = loginForm.getPassword();
 
-        int id = userDao.idByUname(username);
-        if (id == -1) {
-            return "{\"error\": \"Username not exists\"}";
-        }
-        var user = userDao.get(id).get();
+        var userOpt = userService.getByUsername(username);
+        if (userOpt.isEmpty()) return "{\"error\": \"Username not exists\"}";
+        var user = userOpt.get();
         if (!BCrypt.checkpw(password, user.getPasswdHash())) {
             return "{\"error\": \"Incorrect password\"}";
         }
 
-        session.setAttribute("uid", id);
-        return String.format("{\"id\": %d, \"name\": \"%s\"}", id, user.getName());
+        session.setAttribute("uidSignedIn", user.getId());
+        return String.format("{\"id\": %d, \"name\": \"%s\"}", user.getId(), user.getName());
     }
 }
