@@ -32,11 +32,13 @@ public class ChatDaoImpl implements ChatDao {
 
     @Override
     public List<Chat> getAllWith(long memberId) {
-        var res = new ArrayList<Chat>();
-        jdbcTemplate.query("SELECT * FROM user_chat WHERE user_id = ?", rs -> {
-            res.add(new Chat(rs.getLong("chat_id")));
-        }, memberId);
+        var res = jdbcTemplate.query(
+                "SELECT * FROM user_chat WHERE user_id = ?",
+                (rs, rowNum) -> new Chat(rs.getLong("chat_id")), memberId);
         for (var chat : res) {
+            jdbcTemplate.query("SELECT * FROM user_chat WHERE chat_id = ?", rs -> {
+                chat.addMember(rs.getLong("user_id"));
+            }, chat.getId());
             jdbcTemplate.query("SELECT * FROM chat WHERE id = ?", rs -> {
                 chat.setDateCreated(rs.getDate("date"));
             }, chat.getId());
@@ -54,7 +56,7 @@ public class ChatDaoImpl implements ChatDao {
     public Chat createChat(List<Long> memberIds) {
         var chat = new Chat(memberIds);
         chat.setDateCreated(Date.valueOf(LocalDate.now()));
-        jdbcTemplate.query("INSERT INTO chat (date) VALUES (?) RETURNING *",
+        jdbcTemplate.query("INSERT INTO chat (date) VALUES (?) RETURNING id",
                 rs -> {
                     chat.setId(rs.getInt("id"));
                 }, chat.getDateCreated());
