@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -52,6 +53,19 @@ public class MessageDaoImpl implements MessageDao {
                 "SELECT * FROM message WHERE chat_id = ? ORDER BY time",
                 (rs, rowNum) -> buildMessage(rs),
                 chatId
+        );
+    }
+
+    @Override
+    public List<Message> loadAllAfter(Timestamp timestamp, long chatId) {
+        if (timestamp == null) {
+            return loadAllFrom(chatId);
+        }
+        return jdbcTemplate.query(
+                "SELECT * FROM message WHERE chat_id = ? AND time > ? ORDER BY time",
+                (rs, rowNum) -> buildMessage(rs),
+                chatId,
+                timestamp
         );
     }
 }

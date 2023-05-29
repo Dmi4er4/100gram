@@ -78,11 +78,12 @@
                 chatListElement.append(newDiv)
             }
 
-            $scope.addMessage = function(text, my) {
+            $scope.addMessage = function(text, time, my) {
                 const viewArea = $scope.elementById('view-messages')
                 const newDiv = angular.element('<div>').addClass('sent-message')
                 if (my) newDiv.addClass('my')
                 newDiv.text(text)
+                $scope.latestMessageTimestamp = time
                 viewArea.append(newDiv)
                 viewArea[0].scrollTop = viewArea[0].scrollHeight
             }
@@ -95,7 +96,8 @@
                 })
                 .catch($scope.handleError)
 
-            $scope.activeChat = undefined
+            $scope.activeChat = null
+            $scope.latestMessageTimestamp = null
 
             $scope.dispatchMessage = function() {
                 const msgElement = document.getElementById('message')
@@ -107,7 +109,8 @@
                         text: message,
                         chat: $scope.activeChat
                     }).then(function (response) {
-                        $scope.addMessage(message, true)
+                        console.log(response.data)
+                        $scope.addMessage(message, response.data, true)
                     }).catch($scope.handleError)
                 }
             }
@@ -131,44 +134,78 @@
                         $http.post('/api/create-chat', {members: [+$cookies.get("uid"), +other.id]}).then (
                             function (response) {
                                 $scope.addChatToList(response.data);
-                                $scope.selectChat(response.data.id);
+                                $scope.openChat(response.data.id);
                             }
                         ).catch($scope.handleError)
                     }
                 ).catch($scope.handleError)
             }
 
-            $scope.initChat = function (chatId) {
+            $scope.closeCurrentChat = function(preserveTextarea) {
+                let cid = $scope.activeChat
+                if (cid === null) return
+                $scope.activeChat = null
+                $scope.latestMessageTimestamp = null
+                document.getElementById('chat' + cid).classList.add('inactive')
+                if (!preserveTextarea) {
+                    document.getElementById('message').classList.add('inactive')
+                }
                 let messagesView = $scope.elementById('view-messages')
                 messagesView.empty()
-
-                $http.post('/api/load-chat', chatId)
-                    .then(
-                        function(response) {
-                            for (let message of response.data) {
-                                if ($scope.activeChat === message.chatId) {
-                                    $scope.addMessage(message.content,
-                                        message.senderId === +$cookies.get("uid"))
-                                }
-                            }
-                        }
-                    ).catch($scope.handleError)
             }
 
-            $scope.selectChat = function(chatId) {
+            $scope.openChat = function(chatId) {
+                $scope.closeCurrentChat(true)
+
                 let currentChatId = $scope.activeChat
                 $scope.activeChat = chatId
                 if (+currentChatId === +chatId) return
-                if (currentChatId !== undefined) {
-                    document.getElementById('chat' + currentChatId).classList.add('inactive')
-                }
+
                 document.getElementById('chat' + chatId).classList.remove('inactive')
                 document.getElementById('message').classList.remove('inactive')
-                $scope.initChat(chatId)
+
+                // $http.post('/api/load-chat', chatId)
+                //     .then(
+                //         function(response) {
+                //             for (let message of response.data) {
+                //                 if ($scope.activeChat === message.chatId) {
+                //                     $scope.addMessage(message.content,
+                //                         message.senderId === +$cookies.get("uid"))
+                //                 }
+                //             }
+                //         }
+                //     ).catch($scope.handleError)
+
                 document.getElementById('message').focus()
             }
 
-            window.handleClickOnChat = chatId => $scope.selectChat(chatId)
+            $scope.updateCurrentChat = function () {
+                if ($scope.activeChat === null) return
+                const chatId = +$scope.activeChat
+                const time = $scope.latestMessageTimestamp
+                $http.post('/api/new-messages', {
+                    c: chatId,
+                    t: time
+                }).then(response => {
+                    for (let message of response.data) {
+                        if ($scope.activeChat === message.chatId) {
+                            $scope.addMessage(
+                                message.content,
+                                message.time,
+                                message.senderId === +$cookies.get("uid")
+                            )
+                        }
+                    }
+                }).catch($scope.handleError)
+            }
+
+            window.handleClickOnChat = chatId => $scope.openChat(chatId)
+
+            $scope.continuousFetcherJob = setInterval($scope.updateCurrentChat, 300);
+
+            $scope.$on('$locationChangeStart', function(event) {
+                clearInterval($scope.continuousFetcherJob);
+            });
         })
 
         app.run(function($rootScope, $location, $http) {

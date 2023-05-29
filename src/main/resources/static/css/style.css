@@ -134,6 +134,7 @@ button:hover {
 
 #view-messages {
     overflow: scroll;
+    overflow-x: hidden;
     width: 100%;
 }
 
