@@ -18,9 +18,17 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/api/user")
+    @PostMapping("/api/user-by-id")
     ResponseEntity<User> getUser(@RequestBody long id) {
         var result = userService.getById(id);
+        return result
+                .map(user -> ResponseEntity.status(HttpStatus.OK).body(user))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null));
+    }
+
+    @PostMapping("/api/user-by-uname")
+    ResponseEntity<User> getUser(@RequestBody String username) {
+        var result = userService.getByUsername(username);
         return result
                 .map(user -> ResponseEntity.status(HttpStatus.OK).body(user))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null));

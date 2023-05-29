@@ -1,5 +1,6 @@
 package by.fmpibsu.stogram.service;
 
+import by.fmpibsu.stogram.dao.UserDao;
 import by.fmpibsu.stogram.dao.impl.UserDaoImpl;
 import by.fmpibsu.stogram.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,10 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    private final UserDaoImpl userDao;
+    private final UserDao userDao;
 
     @Autowired
-    public UserService(UserDaoImpl userDao) {
+    public UserService(UserDao userDao) {
         this.userDao = userDao;
     }
 

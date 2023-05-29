@@ -1,4 +1,7 @@
 package by.fmpibsu.stogram.dao;
 
-public interface MessageDao {
+import by.fmpibsu.stogram.entity.Chat;
+import by.fmpibsu.stogram.entity.Message;
+
+public interface MessageDao extends Dao<Message> {
 }

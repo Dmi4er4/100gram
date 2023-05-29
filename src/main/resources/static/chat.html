@@ -1,8 +1,8 @@
 <h3 id="introduction"></h3>
 <div class="center-aligner">
-    <form class="hor">
+    <form class="hor" ng-submit="startChat()">
         <label for="recipient"> Start chatting with:&nbsp; </label>
-        <input type="text" id="recipient" placeholder="recipient's username">
+        <input type="text" id="recipient" placeholder="recipient's username" ng-model="friendUName">
         <button type="submit" class="small"> Load! </button>
     </form>
 </div>

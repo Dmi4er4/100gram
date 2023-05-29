@@ -15,14 +15,13 @@ public class ChatService {
     @Autowired
     public ChatService(ChatDao chatDao) {
         this.chatDao = chatDao;
-        chatDao.findOrCreateDialog(0, 1); // HARDCODED
-    }
-
-    public Chat findOrCreateDialog(long senderId, long recipientId) {
-        return chatDao.findOrCreateDialog(senderId, recipientId);
     }
 
     public List<Chat> getAllWith(long memberId) {
         return chatDao.getAllWith(memberId);
+    }
+
+    public Chat createChat(List<Long> memberIds) {
+        return chatDao.createChat(memberIds);
     }
 }

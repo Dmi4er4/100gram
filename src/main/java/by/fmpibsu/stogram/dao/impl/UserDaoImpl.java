@@ -14,8 +14,8 @@ public class UserDaoImpl implements UserDao {
     private final List<User> userStorage = new ArrayList<>();
 
     public UserDaoImpl() {
-        userStorage.add(new User(0, "Haccer", "root", "admin")); // HARDCODED
-        userStorage.add(new User(1, "Friend", "root2", "admin"));
+        userStorage.add(new User(1, "Haccer", "root", "admin")); // HARDCODED
+        userStorage.add(new User(2, "Friend", "root2", "admin"));
     }
 
     @Override

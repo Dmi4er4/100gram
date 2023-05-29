@@ -2,14 +2,13 @@ package by.fmpibsu.stogram.entity;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-public class User {
-    private final long id;
+public class User extends Entity {
     private String name;
     private String username;
     private String passwdHash;
 
     public User(long id, String name, String username, String password) {
-        this.id = id;
+        super(id);
         this.name = name;
         this.username = username;
         this.passwdHash = generateHash(password);
@@ -44,7 +43,35 @@ public class User {
         return BCrypt.hashpw(password, salt);
     }
 
-    public long getId() {
-        return id;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (getId() != user.getId()) return false;
+        if (!name.equals(user.name)) return false;
+        if (!username.equals(user.username)) return false;
+        return passwdHash.equals(user.passwdHash);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (getId() ^ (getId() >>> 32));
+        result = 31 * result + name.hashCode();
+        result = 31 * result + username.hashCode();
+        result = 31 * result + passwdHash.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + getId() +
+                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
+                ", passwdHash='" + passwdHash + '\'' +
+                '}';
     }
 }

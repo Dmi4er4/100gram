@@ -1,27 +1,26 @@
 package by.fmpibsu.stogram.entity;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Chat {
-    private long id;
+public class Chat extends Entity {
+    public Chat(long id) {
+        super(id);
+    }
+
+    public Chat(List<Long> memberIds) {
+        super(-1);
+        this.memberIds = memberIds;
+    }
+
+    public Chat(long id, Date created) {
+        super(id);
+        this.created = created;
+    }
+
     private Date created;
     private List<Long> memberIds = new ArrayList<>();
-
-    public Chat(long id) {
-        this.id = id;
-        this.created = Date.valueOf(LocalDate.now());
-    }
-
-    public Chat(long id, Date date) {
-        this.id = id;
-        this.created = date;
-    }
-    public long getId() {
-        return id;
-    }
 
     public Date getDateCreated() {
         return created;
@@ -33,5 +32,13 @@ public class Chat {
 
     public void addMember(long id) {
         memberIds.add(id);
+    }
+
+    public void setMemberIds(List<Long> memberIds) {
+        this.memberIds = memberIds;
+    }
+
+    public void setDateCreated(Date created) {
+        this.created = created;
     }
 }

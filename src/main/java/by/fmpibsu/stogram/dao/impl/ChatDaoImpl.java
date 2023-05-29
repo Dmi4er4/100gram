@@ -2,11 +2,11 @@ package by.fmpibsu.stogram.dao.impl;
 
 import by.fmpibsu.stogram.dao.ChatDao;
 import by.fmpibsu.stogram.entity.Chat;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.sql.ResultSet;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,59 +20,49 @@ public class ChatDaoImpl implements ChatDao {
     }
 
     @Override
-    public Optional<Chat> get(long id) {
-        List<Chat> chats = jdbcTemplate.query("SELECT * FROM chat WHERE id = " + id, (rs, rowNum) -> {
-            return new Chat(rs.getInt(1), rs.getDate(2));
-        });
-        return id >= 0 && id < chats.size()
-                ? Optional.of(chats.get(0))
-                : Optional.empty();
+    public Optional<Chat> read(long id) {
+        List<Chat> chats = jdbcTemplate.query("SELECT * FROM chat WHERE id = ?",
+                (rs, rowNum) -> new Chat(rs.getInt("id"), rs.getDate("date")), id);
+        if (chats.isEmpty()) return Optional.empty();
+        var chat = chats.get(0);
+        chat.setMemberIds(jdbcTemplate.query("SELECT user_id FROM user_chat WHERE chat_id = ?",
+                (rs, rowNum) -> rs.getLong("user_id"), id));
+        return Optional.of(chat);
     }
 
     @Override
     public List<Chat> getAllWith(long memberId) {
-        String sql = "SELECT * FROM chat";
-//        String sql1 = "SELECT DISTINCT chat_id FROM user_chat WHERE user_id = ?";
-        RowMapper<Chat> rowMapper = (rs, rowNum) -> {
-            Chat chat = new Chat(rs.getInt(1));
-        return jdbcTemplate.query(sql,
-            chat.set;
-        })
-        jdbcTemplate.(sql1, memberId);
         var res = new ArrayList<Chat>();
-        for (var chat : chatStorage) {
-            if (chat.getMemberIds().contains(memberId)) {
-                res.add(chat);
-            }
+        jdbcTemplate.query("SELECT * FROM user_chat WHERE user_id = ?", rs -> {
+            res.add(new Chat(rs.getLong("chat_id")));
+        }, memberId);
+        for (var chat : res) {
+            jdbcTemplate.query("SELECT * FROM chat WHERE id = ?", rs -> {
+                chat.setDateCreated(rs.getDate("date"));
+            }, chat.getId());
         }
-        jdbcTemplate.
         return res;
     }
 
     @Override
-    public void save(Chat chat) {
-        String sql = "INSERT INTO chat (id, date) VALUES (?, ?)";
-        jdbcTemplate.update(sql, chat.getId(), chat.getDateCreated());
-    }
-
-    @Override
     public void delete(Chat chat) {
-        String sql = "DELETE FROM chat WHERE id = ?";
-        jdbcTemplate.update(sql, chat.getId());
+        jdbcTemplate.update("DELETE FROM chat WHERE id = ?", chat.getId());
+        jdbcTemplate.update("DELETE FROM user_chat WHERE chat_id = ?", chat.getId());
     }
 
     @Override
-    public Chat findOrCreateDialog(long id1, long id2) {
-        for (var chat : chatStorage) {
-            var mem = chat.getMemberIds();
-            if (mem.size() == 2 && mem.contains(id1) && mem.contains(id2)) {
-                return chat;
-            }
+    public Chat createChat(List<Long> memberIds) {
+        var chat = new Chat(memberIds);
+        chat.setDateCreated(Date.valueOf(LocalDate.now()));
+        jdbcTemplate.query("INSERT INTO chat (date) VALUES (?) RETURNING *",
+                rs -> {
+                    chat.setId(rs.getInt("id"));
+                }, chat.getDateCreated());
+        for (var id : memberIds) {
+            jdbcTemplate.update(
+                    "INSERT INTO user_chat (user_id, chat_id) VALUES (?, ?)",
+                    id, chat.getId());
         }
-        var newChat = new Chat(chatStorage.size());
-        newChat.addMember(id1);
-        newChat.addMember(id2);
-        save(newChat);
-        return newChat;
+        return chat;
     }
 }

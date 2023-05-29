@@ -110,6 +110,20 @@
                 }
             }
 
+            $scope.friendUName = ""
+
+            $scope.startChat = function() {
+                $scope.getUserByUsernamePromise($scope.friendUName).then (
+                    function (other) {
+                        $http.post('/api/create-chat', {members: [+$cookies.get("uid"), +other.id]}).then (
+                            function (response) {
+                                $scope.addChat(response.data);
+                            }
+                        ).catch($scope.handleError)
+                    }
+                ).catch($scope.handleError)
+            }
+
             window.handleClickOnChat = function(chatId) {
                 let currentChatId = $scope.activeChat
                 $scope.activeChat = chatId
@@ -135,7 +149,7 @@
 
             $rootScope.getUserByIdPromise = function(id) {
                 if ($rootScope.usersMap[id] === undefined) {
-                    return $http.post('/api/user', id)
+                    return $http.post('/api/user-by-id', +id)
                         .then(function (response) {
                             $rootScope.usersMap[id] = response.data
                             return $rootScope.usersMap[id]
@@ -143,6 +157,18 @@
                         .catch($rootScope.handleError)
                 }
                 return $rootScope.usersMap[id]
+            }
+
+            $rootScope.getUserByUsernamePromise = function(username) {
+                if ($rootScope.usersMap[username] === undefined) {
+                    return $http.post('/api/user-by-uname', username)
+                        .then(function (response) {
+                            $rootScope.usersMap[username] = response.data
+                            return $rootScope.usersMap[username]
+                        })
+                        .catch($rootScope.handleError)
+                }
+                return $rootScope.usersMap[username]
             }
 
             $rootScope.handleError = function (error) {

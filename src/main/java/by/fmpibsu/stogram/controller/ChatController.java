@@ -33,4 +33,21 @@ public class ChatController {
         }
         return ResponseEntity.ok(chatService.getAllWith(memberId));
     }
+
+    static public class MemberList {
+        public List<Long> members;
+    }
+
+    @PostMapping("/api/create-chat")
+    @ResponseBody
+    ResponseEntity<Chat> createChat(@RequestBody MemberList memberIds, HttpSession session) {
+        var uid = session.getAttribute("uidSignedIn");
+        if (uid == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        if (!memberIds.members.contains((Long) uid)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        return ResponseEntity.ok(chatService.createChat(memberIds.members));
+    }
 }
