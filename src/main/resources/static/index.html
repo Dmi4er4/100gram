@@ -84,6 +84,7 @@
                 if (my) newDiv.addClass('my')
                 newDiv.text(text)
                 viewArea.append(newDiv)
+                viewArea[0].scrollTop = viewArea[0].scrollHeight
             }
 
             $http.post('api/chats-list', $cookies.get('uid'))

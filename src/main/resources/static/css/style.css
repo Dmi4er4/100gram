@@ -4,7 +4,7 @@
     font-family: 'Exo 2';
     font-style: normal;
     font-weight: 400;
-    src: url('../fonts/exo-2-v20-cyrillic_cyrillic-ext_latin-regular.woff2') format('woff2');
+    src: url('../fonts/exo-2.woff2') format('woff2');
 }
 
 body {
@@ -95,10 +95,13 @@ button.small {
 }
 
 button.chatlist-entry {
-    outline: 1px solid hotpink;
     width: 100%;
     border-radius: 0;
     height: 3.5em;
+}
+
+button.chatlist-entry:hover {
+    transform: translateX(1em);
 }
 
 button.chatlist-entry:not(.inactive) {
@@ -143,6 +146,7 @@ button:hover {
 #message {
     flex-grow: 1;
     width: 100%;
+    height: 5em;
     resize: none;
     background: transparent;
     border: 4px solid rgba(255, 255, 255, 50%);
