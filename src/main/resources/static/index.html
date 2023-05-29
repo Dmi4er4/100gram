@@ -48,7 +48,7 @@
             $scope.loginRequest = function() {
                 $http.post('/api/login', $scope.credentials)
                     .then(function(response) {
-                        if (response.data.error) {
+                        if (response.data.error?.length > 0) {
                             alert(response.data.error)
                         } else {
                             $cookies.put("name", response.data.name)

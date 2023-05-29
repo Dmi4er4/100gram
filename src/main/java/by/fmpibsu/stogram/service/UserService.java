@@ -1,7 +1,6 @@
 package by.fmpibsu.stogram.service;
 
 import by.fmpibsu.stogram.dao.UserDao;
-import by.fmpibsu.stogram.dao.impl.UserDaoImpl;
 import by.fmpibsu.stogram.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -7,11 +7,16 @@ public class User extends Entity {
     private String username;
     private String passwdHash;
 
-    public User(long id, String name, String username, String password) {
+    public enum FlagPasswordState { RAW, HASHED }
+
+    public User(long id, String name, String username,
+                String password, FlagPasswordState state) {
         super(id);
         this.name = name;
         this.username = username;
-        this.passwdHash = generateHash(password);
+        this.passwdHash = state == FlagPasswordState.RAW
+                ? generateHash(password)
+                : password;
     }
 
     public void setName(String name) {
