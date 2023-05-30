@@ -103,7 +103,6 @@ button.chatlist-entry {
 button.chatlist-entry:hover {
     transform: translateX(1em);
 }
-
 button.chatlist-entry:not(.inactive) {
     background: purple;
 }

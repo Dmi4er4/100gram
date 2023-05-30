@@ -23,4 +23,8 @@ public class UserService {
     public Optional<User> getById(long id) {
         return userDao.getById(id);
     }
+
+    public User registerUser(String name, String username, String password) {
+        return userDao.registerUser(name, username, password);
+    }
 }

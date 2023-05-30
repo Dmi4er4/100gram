@@ -21,7 +21,6 @@ public class Chat extends Entity {
 
     private Date created;
     private List<Long> memberIds = new ArrayList<>();
-
     public Date getDateCreated() {
         return created;
     }

@@ -40,36 +40,20 @@ public class LoginController {
         }
     }
 
-    private static class UserJson {
-        public String error;
-        public long id;
-        public String name;
-    }
-
     @PostMapping("/api/login")
     @ResponseBody
-    public UserJson handleLoginSubmission(@RequestBody LoginForm loginForm, HttpSession session) {
+    public String handleLoginSubmission(@RequestBody LoginForm loginForm, HttpSession session) {
         String username = loginForm.getUsername();
         String password = loginForm.getPassword();
 
-        var userJson = new UserJson();
-
         var userOpt = userService.getByUsername(username);
-        if (userOpt.isEmpty()) {
-            userJson.error = "Username not exists";
-            return userJson;
-        }
-
+        if (userOpt.isEmpty()) return "{\"error\": \"Username not exists\"}";
         var user = userOpt.get();
         if (!BCrypt.checkpw(password, user.getPasswdHash())) {
-            userJson.error = "Incorrect password";
-            return userJson;
+            return "{\"error\": \"Incorrect password\"}";
         }
 
         session.setAttribute("uidSignedIn", user.getId());
-
-        userJson.id = user.getId();
-        userJson.name = user.getName();
-        return userJson;
+        return String.format("{\"id\": %d, \"name\": \"%s\"}", user.getId(), user.getName());
     }
 }
