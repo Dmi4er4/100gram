@@ -20,12 +20,16 @@
                     template: '<h1>the Messenger of your Dream!</h1>' +
                         '<div class="container">' +
                         '    <button id="#btn-login" ng-click="navigateToLogin()"> Log In </button>' +
-                        '    <button id="#btn-register" style="display: none"> Register </button>' +
+                        '    <button id="#btn-register" ng-click="navigateToRegistration()"> Register </button>' +
                         '</div>'
                 })
                 .when('/login', {
                     templateUrl: 'login.html',
                     controller: 'loginCtrl'
+                })
+                .when('/register', {
+                    templateUrl: 'registration.html',
+                    controller: 'regCtrl'
                 })
                 .when('/chat', {
                     templateUrl: 'chat.html',
@@ -48,15 +52,31 @@
             $scope.loginRequest = function() {
                 $http.post('/api/login', $scope.credentials)
                     .then(function(response) {
-                        if (response.data.error) {
+                        if (response.data.error?.length > 0) {
                             alert(response.data.error)
                         } else {
                             $cookies.put("name", response.data.name)
                             $cookies.put("uid", response.data.id)
                             $scope.navigateToChats()
                         }
-                    })
-                    .catch($scope.handleError)
+                    }).catch($scope.handleError)
+            }
+        })
+
+        app.controller('regCtrl', function($scope, $cookies, $http) {
+            $scope.credentials = {}
+
+            $scope.regRequest = function() {
+                $http.post('/api/register', $scope.credentials)
+                    .then(function(response) {
+                        if (response.data.error?.length > 0) {
+                            alert(response.data.error)
+                        } else {
+                            $cookies.put("name", response.data.name)
+                            $cookies.put("uid", response.data.id)
+                            $scope.navigateToChats()
+                        }
+                    }).catch($scope.handleError)
             }
         })
 
@@ -64,8 +84,8 @@
             document.getElementById("introduction").innerText = 'You are ' + $cookies.get('name') +
                 ' (id:' + $cookies.get('uid') + ')'
 
-            $scope.addChat = function(chat) {
-                const chatListElement = angular.element(document.getElementById('chat-list'))
+            $scope.addChatToList = function(chat) {
+                const chatListElement = $scope.elementById('chat-list')
                 const newDiv = angular.element(`<button id="chat${chat.id}" onclick="handleClickOnChat(${chat.id})"></button>`)
                     .addClass('chatlist-entry center-aligner hor inactive')
                 for (let member of chat.memberIds) {
@@ -78,48 +98,122 @@
                 chatListElement.append(newDiv)
             }
 
-            $scope.addMessage = function(text) {
-                const viewArea = angular.element(document.getElementById('view-messages'))
+            $scope.addMessage = function(text, time, my) {
+                const viewArea = $scope.elementById('view-messages')
                 const newDiv = angular.element('<div>').addClass('sent-message')
+                if (my) newDiv.addClass('my')
                 newDiv.text(text)
+                $scope.latestMessageTimestamp = time
                 viewArea.append(newDiv)
+                viewArea[0].scrollTop = viewArea[0].scrollHeight
             }
 
             $http.post('api/chats-list', $cookies.get('uid'))
                 .then(function (response) {
                     for (let chat of response.data) {
-                        $scope.addChat(chat)
+                        $scope.addChatToList(chat)
                     }
                 })
                 .catch($scope.handleError)
 
-            $scope.activeChat = undefined
+            $scope.activeChat = null
+            $scope.latestMessageTimestamp = null
+
+            $scope.dispatchMessage = function() {
+                const msgElement = document.getElementById('message')
+                const message = msgElement.value.trim()
+                msgElement.value = ''
+                if (message.length > 0) {
+                    $http.post('/api/send', {
+                        from: +$cookies.get('uid'),
+                        text: message,
+                        chat: $scope.activeChat
+                    }).then(function (response) {
+                        console.log(response.data)
+                        $scope.addMessage(message, response.data, true)
+                    }).catch($scope.handleError)
+                }
+            }
 
             $scope.handleKeyPressInMessage = function(event) {
-                if (event.ctrlKey && event.key === 'Enter') {
-                    const message = document.getElementById('message').value.trim()
-                    if (message.length > 0) {
-                        $http.post('/api/send/', {
-                            from: +$cookies.get('uid'),
-                            text: message,
-                            chat: $scope.activeChat
-                        }).then(function (response) {
-                            $scope.addMessage(message)
-                        }).catch($scope.handleError)
+                if (event.key === 'Enter') {
+                    event.preventDefault()
+                    if (event.ctrlKey) {
+                        event.target.value += '\n'
+                    } else {
+                        $scope.dispatchMessage()
                     }
                 }
             }
 
-            window.handleClickOnChat = function(chatId) {
+            $scope.friendUName = ""
+
+            $scope.startChat = function() {
+                $scope.getUserByUsernamePromise($scope.friendUName).then (
+                    function (other) {
+                        $http.post('/api/create-chat', {members: [+$cookies.get("uid"), +other.id]}).then (
+                            function (response) {
+                                $scope.addChatToList(response.data);
+                                $scope.openChat(response.data.id);
+                            }
+                        ).catch($scope.handleError)
+                    }
+                ).catch($scope.handleError)
+            }
+
+            $scope.closeCurrentChat = function(preserveTextarea) {
+                let cid = $scope.activeChat
+                if (cid === null) return
+                $scope.activeChat = null
+                $scope.latestMessageTimestamp = null
+                document.getElementById('chat' + cid).classList.add('inactive')
+                if (!preserveTextarea) {
+                    document.getElementById('message').classList.add('inactive')
+                }
+                let messagesView = $scope.elementById('view-messages')
+                messagesView.empty()
+            }
+
+            $scope.openChat = function(chatId) {
+                $scope.closeCurrentChat(true)
+
                 let currentChatId = $scope.activeChat
                 $scope.activeChat = chatId
                 if (+currentChatId === +chatId) return
-                if (currentChatId !== undefined) {
-                    document.getElementById('chat' + currentChatId).classList.add('inactive')
-                }
+
                 document.getElementById('chat' + chatId).classList.remove('inactive')
                 document.getElementById('message').classList.remove('inactive')
+
+                document.getElementById('message').focus()
             }
+
+            $scope.updateCurrentChat = function () {
+                if ($scope.activeChat === null) return
+                const chatId = +$scope.activeChat
+                const time = $scope.latestMessageTimestamp
+                $http.post('/api/new-messages', {
+                    c: chatId,
+                    t: time
+                }).then(response => {
+                    for (let message of response.data) {
+                        if ($scope.activeChat === message.chatId) {
+                            $scope.addMessage(
+                                message.content,
+                                message.time,
+                                message.senderId === +$cookies.get("uid")
+                            )
+                        }
+                    }
+                }).catch($scope.handleError)
+            }
+
+            window.handleClickOnChat = chatId => $scope.openChat(chatId)
+
+            $scope.continuousFetcherJob = setInterval($scope.updateCurrentChat, 300);
+
+            $scope.$on('$locationChangeStart', function(event) {
+                clearInterval($scope.continuousFetcherJob);
+            });
         })
 
         app.run(function($rootScope, $location, $http) {
@@ -129,21 +223,39 @@
                 $location.path('/login')
             }
 
+            $rootScope.navigateToRegistration = function() {
+                $location.path('/register')
+            }
+
             $rootScope.navigateToChats = function() {
                 $location.path('/chat')
             }
 
             $rootScope.getUserByIdPromise = function(id) {
                 if ($rootScope.usersMap[id] === undefined) {
-                    return $http.post('/api/user', id)
+                    return $http.post('/api/user-by-id', +id)
                         .then(function (response) {
                             $rootScope.usersMap[id] = response.data
                             return $rootScope.usersMap[id]
                         })
                         .catch($rootScope.handleError)
                 }
-                return $rootScope.usersMap[id]
+                return new Promise(resolve => resolve($rootScope.usersMap[id]))
             }
+
+            $rootScope.getUserByUsernamePromise = function(username) {
+                if ($rootScope.usersMap[username] === undefined) {
+                    return $http.post('/api/user-by-uname', username)
+                        .then(function (response) {
+                            $rootScope.usersMap[username] = response.data
+                            return $rootScope.usersMap[username]
+                        })
+                        .catch($rootScope.handleError)
+                }
+                return new Promise(resolve => resolve($rootScope.usersMap[username]))
+            }
+
+            $rootScope.elementById = id => angular.element(document.getElementById(id))
 
             $rootScope.handleError = function (error) {
                 if (error.status === 401) {
