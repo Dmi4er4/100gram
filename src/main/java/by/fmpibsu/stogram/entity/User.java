@@ -25,7 +25,6 @@ public class User extends Entity {
                 ? generateHash(password)
                 : password;
     }
-
     public void setName(String name) {
         this.name = name;
     }
