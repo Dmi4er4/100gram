@@ -86,7 +86,8 @@
 
             $scope.addChatToList = function(chat) {
                 const chatListElement = $scope.elementById('chat-list')
-                const newDiv = angular.element(`<button id="chat${chat.id}" onclick="handleClickOnChat(${chat.id})"></button>`)
+                const newDiv = angular.element(
+                    `<button id="chat${chat.id}" onclick="handleClickOnChat(${chat.id})"></button>`)
                     .addClass('chatlist-entry center-aligner hor inactive')
                 for (let member of chat.memberIds) {
                     if (member !== +$cookies.get('uid')) {
@@ -129,8 +130,6 @@
                         text: message,
                         chat: $scope.activeChat
                     }).then(function (response) {
-                        console.log(response.data)
-                        $scope.addMessage(message, response.data, true)
                     }).catch($scope.handleError)
                 }
             }
