@@ -2,6 +2,7 @@ package by.fmpibsu.stogram.controller;
 
 import by.fmpibsu.stogram.service.UserService;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@Slf4j
 public class AuthController {
     private final UserService userService;
 
@@ -33,6 +35,8 @@ public class AuthController {
     @PostMapping("/api/login")
     @ResponseBody
     public UserJson handleLoginSubmission(@RequestBody LoginForm loginForm, HttpSession session) {
+        log.info("AuthController : Handle login submission");
+
         var userJson = new UserJson();
 
         var userOpt = userService.getByUsername(loginForm.username);
@@ -63,6 +67,7 @@ public class AuthController {
     @PostMapping("/api/register")
     @ResponseBody
     public UserJson handleRegisterSubmission(@RequestBody RegisterForm registerForm, HttpSession session) {
+        log.info("AuthController : Handle register submission");
         var userJson = new UserJson();
 
         if (userService.getByUsername(registerForm.username).isPresent()) {

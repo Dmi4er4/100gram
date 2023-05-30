@@ -3,6 +3,7 @@ package by.fmpibsu.stogram.controller;
 import by.fmpibsu.stogram.entity.Chat;
 import by.fmpibsu.stogram.service.ChatService;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Controller
+@Slf4j
 public class ChatController {
     private final ChatService chatService;
 
