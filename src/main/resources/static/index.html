@@ -20,12 +20,16 @@
                     template: '<h1>the Messenger of your Dream!</h1>' +
                         '<div class="container">' +
                         '    <button id="#btn-login" ng-click="navigateToLogin()"> Log In </button>' +
-                        '    <button id="#btn-register" style="display: none"> Register </button>' +
+                        '    <button id="#btn-register" ng-click="navigateToRegistration()"> Register </button>' +
                         '</div>'
                 })
                 .when('/login', {
                     templateUrl: 'login.html',
                     controller: 'loginCtrl'
+                })
+                .when('/register', {
+                    templateUrl: 'registration.html',
+                    controller: 'regCtrl'
                 })
                 .when('/chat', {
                     templateUrl: 'chat.html',
@@ -55,8 +59,24 @@
                             $cookies.put("uid", response.data.id)
                             $scope.navigateToChats()
                         }
-                    })
-                    .catch($scope.handleError)
+                    }).catch($scope.handleError)
+            }
+        })
+
+        app.controller('regCtrl', function($scope, $cookies, $http) {
+            $scope.credentials = {}
+
+            $scope.regRequest = function() {
+                $http.post('/api/register', $scope.credentials)
+                    .then(function(response) {
+                        if (response.data.error?.length > 0) {
+                            alert(response.data.error)
+                        } else {
+                            $cookies.put("name", response.data.name)
+                            $cookies.put("uid", response.data.id)
+                            $scope.navigateToChats()
+                        }
+                    }).catch($scope.handleError)
             }
         })
 
@@ -164,18 +184,6 @@
                 document.getElementById('chat' + chatId).classList.remove('inactive')
                 document.getElementById('message').classList.remove('inactive')
 
-                // $http.post('/api/load-chat', chatId)
-                //     .then(
-                //         function(response) {
-                //             for (let message of response.data) {
-                //                 if ($scope.activeChat === message.chatId) {
-                //                     $scope.addMessage(message.content,
-                //                         message.senderId === +$cookies.get("uid"))
-                //                 }
-                //             }
-                //         }
-                //     ).catch($scope.handleError)
-
                 document.getElementById('message').focus()
             }
 
@@ -213,6 +221,10 @@
 
             $rootScope.navigateToLogin = function() {
                 $location.path('/login')
+            }
+
+            $rootScope.navigateToRegistration = function() {
+                $location.path('/register')
             }
 
             $rootScope.navigateToChats = function() {
