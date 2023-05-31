@@ -2,10 +2,12 @@ package by.fmpibsu.stogram.service;
 
 import by.fmpibsu.stogram.dao.ChatDao;
 import by.fmpibsu.stogram.entity.Chat;
+import by.fmpibsu.stogram.service.impl.ChatServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,8 @@ import java.util.List;
 @SpringBootTest
 class ChatServiceTest {
 
-    @Autowired
-    private ChatService chatService;
+    @InjectMocks
+    private ChatServiceImpl chatService;
 
     @Mock
     private ChatDao chatDao;
@@ -46,7 +48,8 @@ class ChatServiceTest {
 
         List<Chat> actualChats = chatService.getAllWith(memberId);
 
-        Assertions.assertEquals(actualChats, actualChats);
+        Assertions.assertEquals(actualChats, expectedChats);
+        Mockito.verify(chatDao, Mockito.times(1)).getAllWith(memberId);
     }
 
     @Test
@@ -57,6 +60,7 @@ class ChatServiceTest {
 
         Chat actualChat = chatService.createChat(memberIds);
 
-        Assertions.assertEquals(expectedChat, expectedChat);
+        Assertions.assertEquals(actualChat, expectedChat);
+        Mockito.verify(chatDao, Mockito.times(1)).createChat(memberIds);
     }
 }
