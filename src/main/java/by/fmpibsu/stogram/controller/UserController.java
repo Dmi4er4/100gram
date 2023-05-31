@@ -22,7 +22,7 @@ public class UserController {
     @PostMapping("/api/user-by-id")
     @ResponseBody
     ResponseEntity<User> getUser(@RequestBody long id) {
-        var result = userService.getById(id);
+        var result = userService.readById(id);
         return result
                 .map(user -> ResponseEntity.status(HttpStatus.OK).body(user))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null));
@@ -31,7 +31,7 @@ public class UserController {
     @PostMapping("/api/user-by-uname")
     @ResponseBody
     ResponseEntity<User> getUser(@RequestBody String username) {
-        var result = userService.getByUsername(username);
+        var result = userService.readByUsername(username);
         return result
                 .map(user -> ResponseEntity.status(HttpStatus.OK).body(user))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null));

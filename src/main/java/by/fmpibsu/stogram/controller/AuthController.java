@@ -39,7 +39,7 @@ public class AuthController {
 
         var userJson = new UserJson();
 
-        var userOpt = userService.getByUsername(loginForm.username);
+        var userOpt = userService.readByUsername(loginForm.username);
         if (userOpt.isEmpty()) {
             userJson.error = "Username not exists";
             return userJson;
@@ -70,7 +70,7 @@ public class AuthController {
         log.info("AuthController : Handle register submission");
         var userJson = new UserJson();
 
-        if (userService.getByUsername(registerForm.username).isPresent()) {
+        if (userService.readByUsername(registerForm.username).isPresent()) {
             userJson.error = "Username already exists";
             return userJson;
         }
