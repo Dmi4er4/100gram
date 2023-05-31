@@ -24,7 +24,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> getById(long id) {
+    public Optional<User> readById(long id) {
         for (var foundUser : jdbcTemplate.query(
                 "SELECT * FROM public.user WHERE id = ?",
                 (rs, rowNum) -> new User(
@@ -39,7 +39,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> getByUsername(String username) {
+    public Optional<User> readByUsername(String username) {
         for (var foundUser : jdbcTemplate.query(
                 "SELECT * FROM public.user WHERE username = ?",
                 (rs, rowNum) -> new User(

@@ -8,20 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class ChatService {
-    private final ChatDao chatDao;
+public interface ChatService {
 
-    @Autowired
-    public ChatService(ChatDao chatDao) {
-        this.chatDao = chatDao;
-    }
+    List<Chat> getAllWith(long memberId);
 
-    public List<Chat> getAllWith(long memberId) {
-        return chatDao.getAllWith(memberId);
-    }
-
-    public Chat createChat(List<Long> memberIds) {
-        return chatDao.createChat(memberIds);
-    }
+    Chat createChat(List<Long> memberIds);
 }

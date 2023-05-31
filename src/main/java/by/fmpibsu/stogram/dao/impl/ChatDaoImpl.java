@@ -20,7 +20,7 @@ public class ChatDaoImpl implements ChatDao {
     }
 
     @Override
-    public Optional<Chat> read(long id) {
+    public Optional<Chat> readById(long id) {
         List<Chat> chats = jdbcTemplate.query("SELECT * FROM chat WHERE id = ?",
                 (rs, rowNum) -> new Chat(rs.getInt("id"), rs.getDate("date")), id);
         if (chats.isEmpty()) return Optional.empty();

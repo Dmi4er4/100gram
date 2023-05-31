@@ -1,6 +1,7 @@
 package by.fmpibsu.stogram.dao.impl;
 
 import by.fmpibsu.stogram.dao.MessageDao;
+import by.fmpibsu.stogram.entity.Chat;
 import by.fmpibsu.stogram.entity.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class MessageDaoImpl implements MessageDao {
@@ -67,5 +69,12 @@ public class MessageDaoImpl implements MessageDao {
                 chatId,
                 timestamp
         );
+    }
+
+    @Override
+    public Optional<Message> readById(long id) {
+        List<Message> messages = jdbcTemplate.query("SELECT * FROM message WHERE id = ?",
+                (rs, rowNum) -> buildMessage(rs), id);
+        return Optional.of(messages.get(0));
     }
 }

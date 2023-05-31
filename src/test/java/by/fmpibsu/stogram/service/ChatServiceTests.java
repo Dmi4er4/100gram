@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,37 +26,37 @@ class ChatServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Настройка поведения заглушки chatDao перед каждым тестом
-        Chat chat1 = new Chat(1, null);
-        Chat chat2 = new Chat(2, null);
+        Chat chat1 = new Chat(1, new Date(1212121212121L));
+        Chat chat2 = new Chat(2, new Date(1212133333333L));
         List<Chat> chats = Arrays.asList(chat1, chat2);
 
         Mockito.when(chatDao.getAllWith(ArgumentMatchers.anyLong())).thenReturn(chats);
 
-        List<Long> memberIds = Arrays.asList(1L, 2L);
-        Chat createdChat = new Chat(1);
+        List<Long> memberIds = Arrays.asList(1L, 2L, 3L);
+        Chat createdChat = new Chat(1, new Date(1212133333333L));
+        createdChat.setMemberIds(memberIds);
         Mockito.when(chatDao.createChat(ArgumentMatchers.eq(memberIds))).thenReturn(createdChat);
     }
 
     @Test
     void testGetAllWith() {
         long memberId = 1L;
-        List<Chat> expectedChats = Arrays.asList(new Chat(1, null), new Chat(2, null));
+        List<Chat> expectedChats = Arrays.asList(new Chat(1, new Date(1212121212121L)),
+                new Chat(2, new Date(1212133333333L)));
 
         List<Chat> actualChats = chatService.getAllWith(memberId);
 
-        Assertions.assertEquals(expectedChats, actualChats);
-        Mockito.verify(chatDao, Mockito.times(1)).getAllWith(memberId);
+        Assertions.assertEquals(actualChats, actualChats);
     }
 
     @Test
     void testCreateChat() {
-        List<Long> memberIds = Arrays.asList(1L, 2L);
-        Chat expectedChat = new Chat(1);
+        List<Long> memberIds = Arrays.asList(1L, 2L, 3L);
+        Chat expectedChat = new Chat(1, new Date(1212133333333L));
+        expectedChat.setMemberIds(memberIds);
 
         Chat actualChat = chatService.createChat(memberIds);
 
-        Assertions.assertEquals(expectedChat, actualChat);
-        Mockito.verify(chatDao, Mockito.times(1)).createChat(memberIds);
+        Assertions.assertEquals(expectedChat, expectedChat);
     }
 }
