@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface MessageService {
 
+    Message sendMessage(long from, long chatId, String text);
+
     List<Message> loadChat(long chatId);
 
     List<Message> fetchNewerMessages(long chatId, Timestamp latest);

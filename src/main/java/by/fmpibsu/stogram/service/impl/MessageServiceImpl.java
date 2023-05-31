@@ -18,6 +18,7 @@ public class MessageServiceImpl implements MessageService {
         this.messageDao = messageDao;
     }
 
+    @Override
     public Message sendMessage(long from, long chatId, String text) {
         return messageDao.createMessage(from, chatId, text);
     }

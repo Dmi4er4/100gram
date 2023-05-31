@@ -1,0 +1,73 @@
+2023-05-31 13:23:09.985 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:51)] - Starting Application using Java 20.0.1 with PID 27698 (/home/toharrius/labs/100gram/target/classes started by toharrius in /home/toharrius/labs/100gram)
+2023-05-31 13:23:09.999 INFO [main] [org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:633)] - No active profile set, falling back to 1 default profile: "default"
+2023-05-31 13:23:10.907 INFO [main] [org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected(RepositoryConfigurationDelegate.java:291)] - Multiple Spring Data modules found, entering strict repository configuration mode
+2023-05-31 13:23:10.909 INFO [main] [org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn(RepositoryConfigurationDelegate.java:138)] - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2023-05-31 13:23:10.943 INFO [main] [org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn(RepositoryConfigurationDelegate.java:208)] - Finished Spring Data repository scanning in 18 ms. Found 0 Redis repository interfaces.
+2023-05-31 13:23:11.583 INFO [main] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:108)] - Tomcat initialized with port(s): 8080 (http)
+2023-05-31 13:23:11.593 INFO [main] [org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:173)] - Initializing ProtocolHandler ["http-nio-8080"]
+2023-05-31 13:23:11.594 INFO [main] [org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:173)] - Starting service [Tomcat]
+2023-05-31 13:23:11.595 INFO [main] [org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:173)] - Starting Servlet engine: [Apache Tomcat/10.1.8]
+2023-05-31 13:23:11.676 INFO [main] [org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:173)] - Initializing Spring embedded WebApplicationContext
+2023-05-31 13:23:11.677 INFO [main] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext(ServletWebServerApplicationContext.java:291)] - Root WebApplicationContext: initialization completed in 1623 ms
+2023-05-31 13:23:12.409 INFO [main] [org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping.<init>(WelcomePageHandlerMapping.java:57)] - Adding welcome page: class path resource [static/index.html]
+2023-05-31 13:23:12.510 INFO [main] [by.fmpibsu.stogram.WebConfig.addResourceHandlers(WebConfig.java:17)] - Add Resource Handlers
+2023-05-31 13:23:13.184 INFO [main] [org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:173)] - Starting ProtocolHandler ["http-nio-8080"]
+2023-05-31 13:23:13.201 INFO [main] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start(TomcatWebServer.java:220)] - Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-31 13:23:13.214 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:57)] - Started Application in 3.67 seconds (process running for 5.219)
+2023-05-31 13:23:13.216 INFO [main] [by.fmpibsu.stogram.Application.lambda$commandLineRunner$0(Application.java:23)] - Entering application
+2023-05-31 13:23:14.369 INFO [http-nio-8080-exec-1] [org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:173)] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-05-31 13:23:14.369 INFO [http-nio-8080-exec-1] [org.springframework.web.servlet.FrameworkServlet.initServletBean(FrameworkServlet.java:532)] - Initializing Servlet 'dispatcherServlet'
+2023-05-31 13:23:14.371 INFO [http-nio-8080-exec-1] [org.springframework.web.servlet.FrameworkServlet.initServletBean(FrameworkServlet.java:554)] - Completed initialization in 1 ms
+2023-05-31 13:23:14.770 INFO [http-nio-8080-exec-1] [com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:110)] - HikariPool-1 - Starting...
+2023-05-31 13:23:14.839 INFO [http-nio-8080-exec-1] [com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:565)] - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4de33f0
+2023-05-31 13:23:14.840 INFO [http-nio-8080-exec-1] [com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:123)] - HikariPool-1 - Start completed.
+2023-05-31 13:29:56.801 INFO [SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource.close(HikariDataSource.java:350)] - HikariPool-1 - Shutdown initiated...
+2023-05-31 13:29:56.807 INFO [SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource.close(HikariDataSource.java:352)] - HikariPool-1 - Shutdown completed.
+2023-05-31 13:30:34.460 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:51)] - Starting Application using Java 20.0.1 with PID 28653 (/home/toharrius/labs/100gram/target/classes started by toharrius in /home/toharrius/labs/100gram)
+2023-05-31 13:30:34.475 INFO [main] [org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:633)] - No active profile set, falling back to 1 default profile: "default"
+2023-05-31 13:30:35.428 INFO [main] [org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected(RepositoryConfigurationDelegate.java:291)] - Multiple Spring Data modules found, entering strict repository configuration mode
+2023-05-31 13:30:35.432 INFO [main] [org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn(RepositoryConfigurationDelegate.java:138)] - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2023-05-31 13:30:35.470 INFO [main] [org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn(RepositoryConfigurationDelegate.java:208)] - Finished Spring Data repository scanning in 19 ms. Found 0 Redis repository interfaces.
+2023-05-31 13:30:36.188 INFO [main] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:108)] - Tomcat initialized with port(s): 8080 (http)
+2023-05-31 13:30:36.200 INFO [main] [org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:173)] - Initializing ProtocolHandler ["http-nio-8080"]
+2023-05-31 13:30:36.202 INFO [main] [org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:173)] - Starting service [Tomcat]
+2023-05-31 13:30:36.202 INFO [main] [org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:173)] - Starting Servlet engine: [Apache Tomcat/10.1.8]
+2023-05-31 13:30:36.374 INFO [main] [org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:173)] - Initializing Spring embedded WebApplicationContext
+2023-05-31 13:30:36.375 INFO [main] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext(ServletWebServerApplicationContext.java:291)] - Root WebApplicationContext: initialization completed in 1836 ms
+2023-05-31 13:30:37.383 INFO [main] [org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping.<init>(WelcomePageHandlerMapping.java:57)] - Adding welcome page: class path resource [static/index.html]
+2023-05-31 13:30:37.473 INFO [main] [by.fmpibsu.stogram.WebConfig.addResourceHandlers(WebConfig.java:17)] - Add Resource Handlers
+2023-05-31 13:30:38.109 INFO [main] [org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:173)] - Starting ProtocolHandler ["http-nio-8080"]
+2023-05-31 13:30:38.124 INFO [main] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start(TomcatWebServer.java:220)] - Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-31 13:30:38.136 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:57)] - Started Application in 4.195 seconds (process running for 5.736)
+2023-05-31 13:30:38.138 INFO [main] [by.fmpibsu.stogram.Application.lambda$commandLineRunner$0(Application.java:23)] - Entering application
+2023-05-31 13:30:38.438 INFO [http-nio-8080-exec-1] [org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:173)] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-05-31 13:30:38.439 INFO [http-nio-8080-exec-1] [org.springframework.web.servlet.FrameworkServlet.initServletBean(FrameworkServlet.java:532)] - Initializing Servlet 'dispatcherServlet'
+2023-05-31 13:30:38.441 INFO [http-nio-8080-exec-1] [org.springframework.web.servlet.FrameworkServlet.initServletBean(FrameworkServlet.java:554)] - Completed initialization in 2 ms
+2023-05-31 13:30:39.005 INFO [http-nio-8080-exec-2] [com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:110)] - HikariPool-1 - Starting...
+2023-05-31 13:30:39.089 INFO [http-nio-8080-exec-2] [com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:565)] - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@335b7fdd
+2023-05-31 13:30:39.090 INFO [http-nio-8080-exec-2] [com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:123)] - HikariPool-1 - Start completed.
+2023-05-31 13:31:13.804 INFO [SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource.close(HikariDataSource.java:350)] - HikariPool-1 - Shutdown initiated...
+2023-05-31 13:31:13.811 INFO [SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource.close(HikariDataSource.java:352)] - HikariPool-1 - Shutdown completed.
+2023-05-31 13:31:18.482 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:51)] - Starting Application using Java 20.0.1 with PID 29125 (/home/toharrius/labs/100gram/target/classes started by toharrius in /home/toharrius/labs/100gram)
+2023-05-31 13:31:18.491 INFO [main] [org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:633)] - No active profile set, falling back to 1 default profile: "default"
+2023-05-31 13:31:19.262 INFO [main] [org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected(RepositoryConfigurationDelegate.java:291)] - Multiple Spring Data modules found, entering strict repository configuration mode
+2023-05-31 13:31:19.266 INFO [main] [org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn(RepositoryConfigurationDelegate.java:138)] - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2023-05-31 13:31:19.294 INFO [main] [org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn(RepositoryConfigurationDelegate.java:208)] - Finished Spring Data repository scanning in 15 ms. Found 0 Redis repository interfaces.
+2023-05-31 13:31:19.854 INFO [main] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:108)] - Tomcat initialized with port(s): 8080 (http)
+2023-05-31 13:31:19.894 INFO [main] [org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:173)] - Initializing ProtocolHandler ["http-nio-8080"]
+2023-05-31 13:31:19.896 INFO [main] [org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:173)] - Starting service [Tomcat]
+2023-05-31 13:31:19.896 INFO [main] [org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:173)] - Starting Servlet engine: [Apache Tomcat/10.1.8]
+2023-05-31 13:31:19.999 INFO [main] [org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:173)] - Initializing Spring embedded WebApplicationContext
+2023-05-31 13:31:20.000 INFO [main] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext(ServletWebServerApplicationContext.java:291)] - Root WebApplicationContext: initialization completed in 1460 ms
+2023-05-31 13:31:20.787 INFO [main] [org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping.<init>(WelcomePageHandlerMapping.java:57)] - Adding welcome page: class path resource [static/index.html]
+2023-05-31 13:31:20.867 INFO [main] [by.fmpibsu.stogram.WebConfig.addResourceHandlers(WebConfig.java:17)] - Add Resource Handlers
+2023-05-31 13:31:21.507 INFO [main] [org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:173)] - Starting ProtocolHandler ["http-nio-8080"]
+2023-05-31 13:31:21.521 INFO [main] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start(TomcatWebServer.java:220)] - Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-31 13:31:21.534 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:57)] - Started Application in 3.482 seconds (process running for 4.968)
+2023-05-31 13:31:21.536 INFO [main] [by.fmpibsu.stogram.Application.lambda$commandLineRunner$0(Application.java:23)] - Entering application
+2023-05-31 13:31:21.673 INFO [http-nio-8080-exec-1] [org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:173)] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-05-31 13:31:21.674 INFO [http-nio-8080-exec-1] [org.springframework.web.servlet.FrameworkServlet.initServletBean(FrameworkServlet.java:532)] - Initializing Servlet 'dispatcherServlet'
+2023-05-31 13:31:21.675 INFO [http-nio-8080-exec-1] [org.springframework.web.servlet.FrameworkServlet.initServletBean(FrameworkServlet.java:554)] - Completed initialization in 1 ms
+2023-05-31 13:31:22.117 INFO [http-nio-8080-exec-2] [com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:110)] - HikariPool-1 - Starting...
+2023-05-31 13:31:22.187 INFO [http-nio-8080-exec-2] [com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:565)] - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@43a75483
+2023-05-31 13:31:22.188 INFO [http-nio-8080-exec-2] [com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:123)] - HikariPool-1 - Start completed.
