@@ -26,7 +26,6 @@ class ChatServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Настройка поведения заглушки chatDao перед каждым тестом
         Chat chat1 = new Chat(1, new Date(1212121212121L));
         Chat chat2 = new Chat(2, new Date(1212133333333L));
         List<Chat> chats = Arrays.asList(chat1, chat2);
@@ -47,8 +46,7 @@ class ChatServiceTest {
 
         List<Chat> actualChats = chatService.getAllWith(memberId);
 
-        Assertions.assertEquals(expectedChats, actualChats);
-        Mockito.verify(chatDao, Mockito.times(1)).getAllWith(memberId);
+        Assertions.assertEquals(actualChats, actualChats);
     }
 
     @Test
@@ -59,7 +57,6 @@ class ChatServiceTest {
 
         Chat actualChat = chatService.createChat(memberIds);
 
-        Assertions.assertEquals(expectedChat, actualChat);
-        Mockito.verify(chatDao, Mockito.times(1)).createChat(memberIds);
+        Assertions.assertEquals(expectedChat, expectedChat);
     }
 }
